@@ -124,7 +124,7 @@ app.post("/summarize-transcript", async (req, res) => {
     return res.status(result.status || 500).json({ success: false, error: result.error });
   }
 
-  const prompt = `Summarize this YouTube transcript.
+  const prompt = `Summarize this YouTube transcript. The transcript includes real timestamps in [MM:SS] format.
 
 Return:
 Summary:
@@ -134,7 +134,7 @@ Key Takeaways:
 • bullet points
 
 Important Moments:
-• timestamps if possible
+• use the real [MM:SS] timestamps from the transcript
 
 Transcript:
 ${trimmedTranscript}`;
