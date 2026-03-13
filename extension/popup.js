@@ -1,5 +1,5 @@
 // Backend URL: use your deployed server or leave as localhost for development
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://youtube-ai-summarizer-jsfz.onrender.com";
 
 const summarizeBtn = document.getElementById("summarizeBtn");
 const resultDiv = document.getElementById("result");
