@@ -1,19 +1,23 @@
 async function openTranscriptPanel() {
+  // If transcript segments are already visible, no need to click anything
+  if (document.querySelectorAll("ytd-transcript-segment-renderer").length > 0) return;
 
-  const buttons = [...document.querySelectorAll("button")];
-
-  const transcriptButton = buttons.find(btn =>
-    btn.innerText.toLowerCase().includes("transcript")
-  );
-
-  if (transcriptButton) {
-    transcriptButton.click();
+  // Retry for up to 5s in case the button hasn't rendered yet
+  const deadline = Date.now() + 5000;
+  while (Date.now() < deadline) {
+    const btn = [...document.querySelectorAll("button")].find(b =>
+      b.innerText.toLowerCase().includes("transcript")
+    );
+    if (btn) {
+      btn.click();
+      return;
+    }
+    await new Promise(r => setTimeout(r, 400));
   }
-
 }
 
 
-async function waitForTranscript(timeout = 5000) {
+async function waitForTranscript(timeout = 12000) {
 
   return new Promise(resolve => {
 
@@ -83,7 +87,7 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
         if (!loaded) {
           sendResponse({
             success: false,
-            error: "Transcript could not load."
+            error: "Transcript could not load. Make sure the video has captions and try again."
           });
           return;
         }
